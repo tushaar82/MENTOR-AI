@@ -56,8 +56,12 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 - **Gemini Flash**: Google's Gemini Flash model used for generating personalized study plans and schedules based on diagnostic test results
 - **Vector Database**: A database storing syllabus content as embeddings for context-aware AI generation
 - **MCQ**: Multiple Choice Question
-- **Mindmap**: An AI-generated visual diagram showing relationships between concepts in a topic
+- **Mindmap**: An AI-generated visual diagram showing relationships between concepts in a topic, available in multiple languages
 - **Topic Summary**: An AI-generated concise overview of key concepts, formulas, and applications for a topic
+- **Teaching Notes**: Comprehensive parent-friendly explanations of topics in native language with simplified concepts and examples
+- **Teaching Methodology**: Structured guides for parents on how to teach topics including teaching sequence, common difficulties, and activities
+- **Audio Summaries**: AI-generated voice explanations of topics in native language using natural text-to-speech
+- **Prerequisite Concepts**: Foundational knowledge required before learning a topic, provided to parents who lack background knowledge
 - **Parent Dashboard**: A dedicated interface for parents to monitor progress, view schedules, and access guidance resources
 - **Multi-lingual**: Support for multiple languages including English, Hindi, and regional Indian languages
 
@@ -199,15 +203,19 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 
 ### Requirement 6: Payment and Subscription Management
 
-**User Story:** As a user, I want to upgrade to a premium subscription, so that I can access unlimited practice modules and advanced features.
+**User Story:** As a parent, I want to upgrade to a premium subscription and manage all payment-related activities, so that my child can access unlimited practice modules and advanced features.
 
 #### Acceptance Criteria
 
-1. WHEN a free-tier user attempts to access premium features THEN the System SHALL display a subscription upgrade prompt
-2. WHEN a user clicks the upgrade button THEN the System SHALL redirect to a payment page with pricing information
-3. WHEN a user completes payment through the payment gateway THEN the System SHALL update the user account to premium status
-4. WHEN payment processing fails THEN the System SHALL display an error message and allow the user to retry
-5. WHEN a premium subscription is active THEN the System SHALL grant access to all practice modules and remove daily limits
+1. WHEN a student attempts to access premium features THEN the System SHALL display a message that subscription must be managed by the parent
+2. WHEN a parent on free-tier attempts to access premium features THEN the System SHALL display a subscription upgrade prompt
+3. WHEN a parent clicks the upgrade button THEN the System SHALL redirect to a payment page with pricing information and subscription plans
+4. WHEN a parent completes payment through the payment gateway THEN the System SHALL update the parent account and linked student account to premium status
+5. WHEN payment processing fails THEN the System SHALL display an error message to the parent and allow retry
+6. WHEN a premium subscription is active THEN the System SHALL grant both parent and student access to all practice modules, advanced analytics, and remove daily limits
+7. WHEN a parent views subscription details THEN the System SHALL display current plan, renewal date, payment history, and upgrade options
+8. WHEN a student attempts to view payment information THEN the System SHALL display a message that only parents can access payment details
+9. WHEN a subscription expires THEN the System SHALL notify the parent 7 days in advance and restrict premium features after expiry
 
 ### Requirement 7: Question Generation Quality and Accuracy
 
@@ -224,15 +232,18 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 
 ### Requirement 8: Performance Tracking and Analytics
 
-**User Story:** As a user, I want to track my progress over time, so that I can see my improvement and stay motivated.
+**User Story:** As a student and parent, I want to track progress over time on both dashboards, so that we can see improvement, identify trends, and stay motivated together.
 
 #### Acceptance Criteria
 
-1. WHEN a user completes any practice module THEN the System SHALL record the score, time taken, and topic in the user's history
-2. WHEN a user views their progress page THEN the System SHALL display a timeline chart showing mastery score changes for each topic
-3. WHEN calculating mastery scores THEN the System SHALL use a weighted average of the last 5 practice sessions for that topic
-4. WHEN a user achieves 80% or higher mastery in a previously weak topic THEN the System SHALL display a congratulatory notification
-5. WHEN displaying analytics THEN the System SHALL show total questions attempted, accuracy percentage, and time spent studying
+1. WHEN a student completes any practice module THEN the System SHALL record the score, time taken, and topic in the student's history
+2. WHEN a student views their progress page THEN the System SHALL display a timeline chart showing mastery score changes for each topic
+3. WHEN a parent views the student's progress page THEN the System SHALL display the same timeline chart and analytics visible to the student
+4. WHEN calculating mastery scores THEN the System SHALL use a weighted average of the last 5 practice sessions for that topic
+5. WHEN a student achieves 80% or higher mastery in a previously weak topic THEN the System SHALL display a congratulatory notification to both student and parent
+6. WHEN displaying analytics THEN the System SHALL show total questions attempted, accuracy percentage, time spent studying, and topic-wise progress to both student and parent
+7. WHEN a parent views analytics THEN the System SHALL additionally provide parent-specific insights including intervention recommendations and mentoring effectiveness metrics
+8. WHEN either student or parent accesses performance data THEN the System SHALL ensure both see consistent, real-time synchronized information
 
 ### Requirement 9: Data Persistence and Reliability
 
@@ -404,8 +415,7 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 6. WHEN a parent views a weak topic THEN the System SHALL provide a structured intervention plan with daily activities, checkpoints, and success indicators
 7. WHEN a parent accesses the motivation tools THEN the System SHALL provide age-appropriate encouragement strategies, stress management tips, and milestone celebration ideas
 8. WHEN viewing cost savings THEN the System SHALL display a comparison calculator showing money saved versus traditional coaching fees
-9. WHEN a parent needs help THEN the System SHALL provide a library of video tutorials on how to use the platform and support their child's learning
-10. WHEN a student shows declining performance THEN the System SHALL alert the parent with specific intervention recommendations and resources
+9. WHEN a student shows declining performance THEN the System SHALL alert the parent with specific intervention recommendations and resources
 
 ### Requirement 23: Multi-Exam Support (JEE Main, JEE Advanced, NEET, MHT CET)
 
@@ -423,17 +433,22 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 8. WHEN displaying parent guidance THEN the System SHALL provide exam-specific preparation strategies and timelines
 9. WHEN a student prepares for JEE Main and JEE Advanced THEN the System SHALL allow dual exam preparation with coordinated study plans
 
-### Requirement 24: Parent Teaching Resources and Video Tutorials
+### Requirement 24: Comprehensive Parent Teaching Resources in Native Language
 
-**User Story:** As a parent with limited knowledge of JEE/NEET topics, I want access to comprehensive teaching resources and video tutorials, so that I can effectively teach and guide my child at home.
+**User Story:** As a parent with limited knowledge of exam topics, I want detailed notes, teaching methodology, mindmaps, and audio summaries in my native language for topics where my child is weak, so that I can learn and effectively teach my child even without prior expertise.
 
 #### Acceptance Criteria
 
-1. WHEN a parent selects a topic THEN the System SHALL provide a complete teaching guide including concept breakdown, prerequisite knowledge, and teaching sequence
-2. WHEN a parent needs visual help THEN the System SHALL provide AI-generated video tutorial links and animated concept explanations
-3. WHEN a parent views a teaching guide THEN the System SHALL include worked examples with step-by-step solutions that parents can use to teach
-4. WHEN a parent accesses practice activities THEN the System SHALL provide hands-on activities, real-world applications, and interactive exercises parents can do with students
-5. WHEN a parent needs assessment help THEN the System SHALL provide sample questions with detailed solutions that parents can use to test understanding
+1. WHEN a parent views a weak topic THEN the System SHALL provide comprehensive teaching notes in the parent's selected language covering all key concepts, formulas, and applications
+2. WHEN generating teaching notes THEN the System SHALL use Gemini Flash to create parent-friendly explanations with simplified language, real-world examples, and step-by-step breakdowns
+3. WHEN a parent accesses teaching methodology THEN the System SHALL provide structured teaching guides including how to introduce the topic, common student difficulties, teaching sequence, and practice activities
+4. WHEN a parent requests a mindmap THEN the System SHALL generate an AI-powered visual mindmap in the parent's native language showing concept relationships and topic structure
+5. WHEN a parent needs audio support THEN the System SHALL provide AI-generated audio summaries in the parent's native language that explain key concepts, formulas, and problem-solving approaches
+6. WHEN audio summaries are played THEN the System SHALL use natural-sounding text-to-speech in the selected language with proper pronunciation of technical terms
+7. WHEN a parent has no prior knowledge of a topic THEN the System SHALL provide prerequisite concept explanations and foundational knowledge in their native language
+8. WHEN teaching resources are displayed THEN the System SHALL include worked examples with detailed solutions that parents can use to teach
+9. WHEN a parent changes their language preference THEN the System SHALL regenerate all teaching resources, notes, mindmaps, and audio summaries in the new language
+10. WHEN generating resources THEN the System SHALL ensure technical terms are properly translated with original English terms in parentheses for reference
 
 ### Requirement 25: Parent-Student Communication and Motivation Tools
 
