@@ -33,10 +33,15 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 - **Diagnostic Test**: An initial assessment that mirrors the real exam format with questions based on previous 10 years' patterns, weightage system, and negative marking
 - **Diagnostic Test Analytics**: AI-generated comprehensive analysis of test performance showing weak subjects, weak topics, and improvement strategies
 - **Weightage System**: Topic-wise question distribution matching the official exam pattern based on historical data
+- **Topic Weightage**: The percentage or importance of each topic in the exam based on analysis of previous 10 years' question papers
+- **Weightage-Based Scheduling**: Study plan generation that allocates more time to high-weightage topics, especially when they are weak areas
 - **Negative Marking**: Deduction of marks for incorrect answers following the real exam's marking scheme
-- **Question Pattern Analysis**: AI analysis of previous 10 years' question papers to identify recurring patterns, question types, and difficulty distribution
+- **Question Pattern Analysis**: AI analysis of previous 10 years' question papers to identify recurring patterns, question types, difficulty distribution, and topic weightages
 - **Study Plan**: A personalized sequence of topics and practice modules generated based on diagnostic results
 - **Study Schedule**: A time-bound, day-by-day plan generated based on the user's exam date and remaining preparation time
+- **Adaptive Rescheduling**: Automatic regeneration of the study schedule when students miss sessions or practice test results show significant performance changes
+- **Missed Session**: A scheduled study session that the student failed to complete within the allocated time
+- **Practice Test Performance Analysis**: AI evaluation of practice test results to identify newly weak topics, improved topics, and persistent weak areas
 - **Exam Session**: The specific attempt/session of an exam (e.g., JEE Main January Session, JEE Main April Session, NEET May Session)
 - **Target Year**: The year in which the user plans to take the exam (e.g., 2024, 2025)
 - **Exam Date**: The official date of the target exam session
@@ -126,34 +131,43 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 1. WHEN a student completes the diagnostic test THEN the System SHALL use Gemini Flash model to analyze the test results and generate comprehensive analytics
 2. WHEN generating analytics THEN the System SHALL identify and categorize weak subjects, moderate subjects, and strong subjects with percentage scores
 3. WHEN displaying analytics THEN the System SHALL show topic-wise breakdown within each subject highlighting specific weak topics with accuracy percentages
-4. WHEN weak areas are identified THEN the System SHALL use Gemini Flash to generate specific improvement strategies for each weak subject and topic
-5. WHEN displaying strategies THEN the System SHALL include recommended focus areas, study techniques, practice priorities, and estimated time to improve
+4. WHEN weak areas are identified THEN the System SHALL provide Gemini Flash with topic weightage data and use it to generate specific improvement strategies prioritizing high-weightage weak topics
+5. WHEN displaying strategies THEN the System SHALL include topic weightage percentages, recommended focus areas, study techniques, practice priorities, and estimated time to improve based on weightage and difficulty
 6. WHEN analytics are generated THEN the System SHALL make them visible to both student and parent dashboards with identical information
 7. WHEN viewing analytics THEN the System SHALL display visual charts showing performance distribution across subjects and topics
 8. WHEN a parent views analytics THEN the System SHALL provide parent-specific guidance on how to help the student improve in weak areas
 9. WHEN analytics generation fails THEN the System SHALL retry up to 3 times and display an error message if unsuccessful
 
-### Requirement 5: AI-Powered Study Plan and Schedule Generation
+### Requirement 5: AI-Powered Study Plan and Schedule Generation with Adaptive Rescheduling
 
-**User Story:** As a student, I want the system to automatically generate a personalized study plan and schedule based on my diagnostic test results and exam date, so that I have a clear roadmap to prepare effectively.
+**User Story:** As a student, I want the system to automatically generate a personalized study plan and schedule based on my diagnostic test results and exam date, and automatically adjust when I miss sessions, so that I always have a realistic and achievable roadmap.
 
 #### Acceptance Criteria
 
-1. WHEN diagnostic test analytics are generated THEN the System SHALL use Gemini Flash model to create a personalized study plan based on weak areas, strong areas, exam date, and days remaining
-2. WHEN generating the study plan THEN the Gemini Flash model SHALL prioritize weak topics, allocate time based on topic weightage and difficulty, and create a day-by-day schedule
-3. WHEN the study plan is generated THEN the System SHALL display it on both student and parent dashboards with daily tasks, weekly milestones, and topic coverage
-4. WHEN generating the schedule THEN the System SHALL consider the parent's preferred study time slots and the student's current preparation status
-5. WHEN the study plan is created THEN the System SHALL include practice modules, review sessions, and mock tests distributed across the remaining days until the exam
-6. WHEN the AI generation fails THEN the System SHALL retry up to 3 times and display an error message if unsuccessful
-7. WHEN the study plan is displayed THEN the System SHALL show estimated daily study hours, topic sequence, and progress tracking metrics
+1. WHEN diagnostic test analytics are generated THEN the System SHALL provide Gemini Flash model with diagnostic results, weak areas, strong areas, exam date, days remaining, and official topic weightage data from previous 10 years' exam analysis
+2. WHEN generating the study plan THEN the Gemini Flash model SHALL use topic weightage data to prioritize high-weightage weak topics, allocate study time proportional to both weightage and student weakness, and create a day-by-day schedule
+3. WHEN calculating time allocation THEN the System SHALL provide Gemini Flash with weightage percentages for each topic based on historical exam patterns
+4. WHEN the study plan is generated THEN the System SHALL display it on both student and parent dashboards with daily tasks, weekly milestones, topic coverage, and weightage information for each topic
+5. WHEN generating the schedule THEN the System SHALL provide Gemini Flash with parent's preferred study time slots, student's current preparation status, and topic weightage data
+6. WHEN the study plan is created THEN the System SHALL include practice modules, review sessions, and mock tests distributed across the remaining days with priority given to high-weightage topics
+6. WHEN a student fails to complete a scheduled session THEN the System SHALL detect the missed session within 24 hours
+7. WHEN a missed session is detected THEN the System SHALL use Gemini Flash to automatically regenerate the remaining schedule redistributing pending topics across available days
+8. WHEN a student completes a practice test THEN the System SHALL analyze the performance to identify newly weak topics, improved topics, and persistent weak areas along with their respective weightages
+9. WHEN practice test results show significant changes in topic mastery THEN the System SHALL provide Gemini Flash with updated performance data and topic weightages to modify the schedule prioritizing high-weightage weak areas
+10. WHEN rescheduling based on practice tests THEN the System SHALL reduce time allocation for improved topics and increase focus on high-weightage topics where performance declined or remained weak
+11. WHEN rescheduling for any reason THEN the System SHALL prioritize high-weightage and weak topics while maintaining realistic daily study hours
+12. WHEN the schedule is modified THEN the System SHALL notify both student and parent with the updated schedule and reasons for changes
+13. WHEN multiple sessions are missed THEN the System SHALL alert the parent with a warning about falling behind and suggest intervention strategies
+11. WHEN the AI generation or rescheduling fails THEN the System SHALL retry up to 3 times and display an error message if unsuccessful
+12. WHEN the study plan is displayed THEN the System SHALL show estimated daily study hours, topic sequence, progress tracking metrics, and any recent schedule adjustments
 
 ### Requirement 3: Personalized Dashboard and Progress Visualization
 
-**User Story:** As a user, I want to view my performance metrics and study plan on a dashboard, so that I can understand my current standing and what to focus on next.
+**User Story:** As a Student, I want to view my performance metrics and study plan on a dashboard, so that I can understand my current standing and what to focus on next.
 
 #### Acceptance Criteria
 
-1. WHEN a user accesses the dashboard THEN the System SHALL display the overall diagnostic test score as a percentage
+1. WHEN a Student accesses the dashboard THEN the System SHALL display the overall diagnostic test score as a percentage
 2. WHEN the dashboard loads THEN the System SHALL present a visual chart showing mastery scores for all topics
 3. WHEN displaying topics THEN the System SHALL use color coding to distinguish weak topics, moderate topics, and strong topics
 4. WHEN a user views the study plan section THEN the System SHALL display the first 3 weak topics prioritized for practice
