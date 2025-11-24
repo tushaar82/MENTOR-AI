@@ -15,6 +15,8 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 - **Parent**: A parent or guardian who creates accounts, manages settings, and actively mentors the student
 - **Parent Account**: The primary account created by a parent to manage their child's learning journey
 - **Student Account**: A child account created by a parent with login credentials provided to the student
+- **Google Sign-In**: OAuth-based authentication allowing parents to register and login using their Google account
+- **Razorpay**: Payment gateway integration for processing subscription payments, refunds, and managing payment history
 - **Child Profile**: A student profile linked to a parent account containing child information and learning data
 - **Child Onboarding**: The process of adding child information, selecting exam, and scheduling diagnostic test
 - **Parent Preferences**: Settings including language, notification preferences, study time slots, and educational background
@@ -73,24 +75,26 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 
 #### Acceptance Criteria
 
-1. WHEN a parent visits the platform THEN the System SHALL display registration options for email and phone number signup for parents only
-2. WHEN a parent submits valid registration credentials THEN the System SHALL create a parent account and send a verification code
-3. WHEN a parent completes verification THEN the System SHALL prompt the parent to select their preferred language from available options (English, Hindi, and regional languages)
-4. WHEN a parent selects their language THEN the System SHALL display all subsequent onboarding screens in the selected language.
-5. WHEN language is selected THEN the System SHALL prompt the parent for additional preferences including notification preferences, preferred study time slots, and parent's educational background
-6. WHEN a parent completes preference setup THEN the System SHALL redirect to the child onboarding flow
-7. WHEN a parent accesses the child onboarding page THEN the System SHALL prompt to add child information including name, age, current grade, school name, and current preparation status (not started, self-studying, attending coaching)
-8. WHEN a parent submits child information THEN the System SHALL validate the data and create a child profile linked to the parent account
-9. WHEN a parent attempts to add a second child THEN the System SHALL display a message that only one child is allowed per parent account
-10. WHEN child profile is created THEN the System SHALL prompt the parent to select the target exam from available options (JEE Main, JEE Advanced, NEET, MHT CET)
-11. WHEN a parent selects an exam type THEN the System SHALL display available exam sessions and years for that exam
-12. WHEN a parent selects an exam session and year THEN the System SHALL show the official or expected exam date and calculate days remaining
-13. WHEN exam date is confirmed THEN the System SHALL prompt the parent to schedule the diagnostic test with available date and time slots
-14. WHEN a parent schedules the diagnostic test THEN the System SHALL save the schedule, generate student login credentials, send confirmation notification to parent with student credentials, and redirect to the parent dashboard
-15. WHEN a parent provides incomplete information at any step THEN the System SHALL display specific validation errors and prevent progression
-16. WHEN a parent wants to modify preferences, child information, or exam details later THEN the System SHALL allow editing from the parent dashboard settings
-17. WHEN a parent or student wants to change their language preference THEN the System SHALL provide a language selector in the settings menu and update all content immediately
-18. WHEN the System detects a student attempting to register independently THEN the System SHALL display a message that accounts must be created by parents
+1. WHEN a parent visits the platform THEN the System SHALL display registration options including email signup, phone number signup, and Google Sign-In for parents only
+2. WHEN a parent chooses Google Sign-In THEN the System SHALL authenticate using Google OAuth and create a parent account with Google profile information
+3. WHEN a parent submits valid email or phone registration credentials THEN the System SHALL create a parent account and send a verification code
+4. WHEN a parent logs in THEN the System SHALL support login via email/password, phone/OTP, or Google Sign-In
+5. WHEN a parent completes verification or Google Sign-In THEN the System SHALL prompt the parent to select their preferred language from available options (English, Hindi, and regional languages)
+6. WHEN a parent selects their language THEN the System SHALL display all subsequent onboarding screens in the selected language
+7. WHEN language is selected THEN the System SHALL prompt the parent for additional preferences including notification preferences, preferred study time slots, and parent's educational background
+8. WHEN a parent completes preference setup THEN the System SHALL redirect to the child onboarding flow
+9. WHEN a parent accesses the child onboarding page THEN the System SHALL prompt to add child information including name, age, current grade, school name, and current preparation status (not started, self-studying, attending coaching)
+10. WHEN a parent submits child information THEN the System SHALL validate the data and create a child profile linked to the parent account
+11. WHEN a parent attempts to add a second child THEN the System SHALL display a message that only one child is allowed per parent account
+12. WHEN child profile is created THEN the System SHALL prompt the parent to select the target exam from available options (JEE Main, JEE Advanced, NEET, MHT CET)
+13. WHEN a parent selects an exam type THEN the System SHALL display available exam sessions and years for that exam
+14. WHEN a parent selects an exam session and year THEN the System SHALL show the official or expected exam date and calculate days remaining
+15. WHEN exam date is confirmed THEN the System SHALL prompt the parent to schedule the diagnostic test with available date and time slots
+16. WHEN a parent schedules the diagnostic test THEN the System SHALL save the schedule, generate student login credentials, send confirmation notification to parent with student credentials, and redirect to the parent dashboard
+17. WHEN a parent provides incomplete information at any step THEN the System SHALL display specific validation errors and prevent progression
+18. WHEN a parent wants to modify preferences, child information, or exam details later THEN the System SHALL allow editing from the parent dashboard settings
+19. WHEN a parent or student wants to change their language preference THEN the System SHALL provide a language selector in the settings menu and update all content immediately
+20. WHEN the System detects a student attempting to register independently THEN the System SHALL display a message that accounts must be created by parents
 
 ### Requirement 2: Student Login and Access
 
@@ -210,12 +214,15 @@ The platform aims to identify individual learning gaps and deliver targeted, syl
 1. WHEN a student attempts to access premium features THEN the System SHALL display a message that subscription must be managed by the parent
 2. WHEN a parent on free-tier attempts to access premium features THEN the System SHALL display a subscription upgrade prompt
 3. WHEN a parent clicks the upgrade button THEN the System SHALL redirect to a payment page with pricing information and subscription plans
-4. WHEN a parent completes payment through the payment gateway THEN the System SHALL update the parent account and linked student account to premium status
-5. WHEN payment processing fails THEN the System SHALL display an error message to the parent and allow retry
-6. WHEN a premium subscription is active THEN the System SHALL grant both parent and student access to all practice modules, advanced analytics, and remove daily limits
-7. WHEN a parent views subscription details THEN the System SHALL display current plan, renewal date, payment history, and upgrade options
-8. WHEN a student attempts to view payment information THEN the System SHALL display a message that only parents can access payment details
-9. WHEN a subscription expires THEN the System SHALL notify the parent 7 days in advance and restrict premium features after expiry
+4. WHEN a parent proceeds to payment THEN the System SHALL integrate with Razorpay payment gateway to process the transaction
+5. WHEN a parent completes payment through Razorpay THEN the System SHALL verify the payment status and update the parent account and linked student account to premium status
+6. WHEN payment processing fails THEN the System SHALL display an error message to the parent and allow retry
+7. WHEN payment is successful THEN the System SHALL send a payment confirmation email and receipt to the parent
+8. WHEN a premium subscription is active THEN the System SHALL grant both parent and student access to all practice modules, advanced analytics, and remove daily limits
+9. WHEN a parent views subscription details THEN the System SHALL display current plan, renewal date, payment history via Razorpay, and upgrade options
+10. WHEN a student attempts to view payment information THEN the System SHALL display a message that only parents can access payment details
+11. WHEN a subscription expires THEN the System SHALL notify the parent 7 days in advance and restrict premium features after expiry
+12. WHEN processing refunds THEN the System SHALL use Razorpay's refund API to process refund requests initiated by parents or administrators
 
 ### Requirement 7: Question Generation Quality and Accuracy
 
